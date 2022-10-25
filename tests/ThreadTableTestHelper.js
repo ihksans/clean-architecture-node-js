@@ -25,6 +25,18 @@ const ThreadTableTestHelper = {
         const result = await pool.query(query)
         return result.rows
     },
+    async getThreadDetail(id){
+        const query = {
+            text: ` SELECT threads.id, threads.title, threads.body, users.username, threads.date
+                    FROM threads
+                    LEFT JOIN users 
+                    ON threads."ownerId" = users.id
+                    WHERE threads.id = $1`,
+            values: [id],
+        }
+        const result = await pool.query(query)
+        return result.rows
+    },
     async addThreadWithReturnId(request) {
         const {userid, username, password, fullname } = request
         const userquery = {
@@ -120,6 +132,37 @@ const ThreadTableTestHelper = {
         }
         await pool.query(commentQuery)
         return threadId
+    },
+    async addThreadDetailWithReturnItem() {
+        const user = {
+            userid : 'user-9998',
+            username: 'userhelper',
+            password: 'secret',
+            fullname: 'userhelper'
+        }
+        const userquery = {
+        text: 'INSERT INTO users VALUES($1, $2, $3, $4) RETURNING id, username, fullname',
+        values: [user.userid, user.username, user.password, user.fullname],
+        }
+        await pool.query(userquery)
+        const threadId = 'thread-281'
+        const body = 'content thread'
+        const title = 'thread'
+        const threadQuery = {
+            text : 'INSERT INTO threads VALUES($1, $2, $3, $4)',
+            values: [ threadId, title , body, user.userid],
+        }
+        await pool.query(threadQuery)
+        const query = {
+            text: ` SELECT threads.id, threads.title, threads.body, users.username, threads.date
+                    FROM threads
+                    LEFT JOIN users 
+                    ON threads."ownerId" = users.id
+                    WHERE threads.id = $1`,
+            values: [threadId],
+        }
+        const result = await pool.query(query)
+        return result.rows[0]
     }
 }
 module.exports = ThreadTableTestHelper

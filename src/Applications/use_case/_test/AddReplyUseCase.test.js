@@ -24,10 +24,10 @@ describe('Add Reply Use Case', () => {
     mockReplyRepository.addReply = jest
       .fn()
       .mockImplementation(() => Promise.resolve(response))
-    mockThreadRepository.getThread = jest
+    mockThreadRepository.verifyThreadAvaibility = jest
       .fn()
       .mockImplementation(() => Promise.resolve(response))
-    mockCommentRepository.getComment = jest
+    mockCommentRepository.verifyCommentAvaibility = jest
       .fn()
       .mockImplementation(() => Promise.resolve(response))
 
@@ -48,8 +48,8 @@ describe('Add Reply Use Case', () => {
 
     // Assert
     expect(registeredReply).toStrictEqual(response)
-    expect(mockCommentRepository.getComment).toBeCalledWith(commentId)
-    expect(mockThreadRepository.getThread).toBeCalledWith(threadId)
+    expect(mockCommentRepository.verifyCommentAvaibility).toBeCalledWith(commentId)
+    expect(mockThreadRepository.verifyThreadAvaibility).toBeCalledWith(threadId)
     expect(mockReplyRepository.addReply).toBeCalledWith(content, id, commentId)
   })
 })

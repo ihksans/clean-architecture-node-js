@@ -20,4 +20,9 @@ describe('Comment repository', ()=>{
         const commentRepository = new CommentRepository()
         await expect(commentRepository.getComments({})).rejects.toThrowError('COMMENT_REPOSITORY.METHOD_NOT_IMPLEMENTED')
     })
+    it('should throw error when invoke abstract behavior', async()=>{
+        // Arrange
+        const commentRepository = new CommentRepository()
+        await expect(commentRepository.verifyCommentAvaibility({})).rejects.toThrowError('COMMENT_REPOSITORY.METHOD_NOT_IMPLEMENTED')
+    })
 })

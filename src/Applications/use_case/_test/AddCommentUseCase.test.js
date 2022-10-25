@@ -22,7 +22,7 @@ describe('Add Comment Use Case', () => {
     mockCommentRepository.addComment = jest
       .fn()
       .mockImplementation(() => Promise.resolve(response))
-    mockThreadRepository.getThread = jest
+    mockThreadRepository.verifyThreadAvaibility = jest
       .fn()
       .mockImplementation(() => Promise.resolve(response))
 
@@ -46,6 +46,6 @@ describe('Add Comment Use Case', () => {
       id,
       threadId,
     )
-    expect(mockThreadRepository.getThread).toBeCalledWith(threadId)
+    expect(mockThreadRepository.verifyThreadAvaibility).toBeCalledWith(threadId)
   })
 })

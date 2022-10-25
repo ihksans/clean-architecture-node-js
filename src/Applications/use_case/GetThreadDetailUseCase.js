@@ -22,7 +22,7 @@ class GetThreadDetailUseCase {
         let result = []
         comments = comments.length > 0 ? comments : []
         comments.forEach(comment => {
-            comment.content = comment.deletedAt != null ? "**balasan telah dihapus**" :  comment.content
+            comment.content = comment.deletedAt != null ? "**komentar telah dihapus**" :  comment.content
             result.push(comment)
         })
         return result

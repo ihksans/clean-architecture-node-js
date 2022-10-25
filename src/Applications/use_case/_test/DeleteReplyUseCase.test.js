@@ -21,13 +21,13 @@ describe('Delete Reply Use Case', () => {
     const mockReplyRepository = new ReplyRepository()
 
     // mocking
-    mockThreadRepository.getThread = jest
+    mockThreadRepository.verifyThreadAvaibility = jest
       .fn()
       .mockImplementation(() => Promise.resolve(response))
-    mockCommentRepository.getComment = jest
+    mockCommentRepository.verifyCommentAvaibility = jest
       .fn()
       .mockImplementation(() => Promise.resolve(response))
-    mockReplyRepository.getReply = jest
+    mockReplyRepository.verifyReplyAvaibility = jest
       .fn()
       .mockImplementation(() => Promise.resolve(response))
     mockReplyRepository.deleteReply = jest
@@ -50,9 +50,9 @@ describe('Delete Reply Use Case', () => {
 
     // Assert
     expect(isDelete).toEqual(true)
-    expect(mockThreadRepository.getThread).toBeCalledWith(threadId)
-    expect(mockCommentRepository.getComment).toBeCalledWith(commentId)
-    expect(mockReplyRepository.getReply).toBeCalledWith(replyId)
+    expect(mockThreadRepository.verifyThreadAvaibility).toBeCalledWith(threadId)
+    expect(mockCommentRepository.verifyCommentAvaibility).toBeCalledWith(commentId)
+    expect(mockReplyRepository.verifyReplyAvaibility).toBeCalledWith(replyId)
     expect(mockReplyRepository.deleteReply).toBeCalledWith(replyId, id)
   })
 })

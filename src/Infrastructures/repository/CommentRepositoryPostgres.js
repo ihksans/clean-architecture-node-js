@@ -1,7 +1,6 @@
 const CommentRepository = require('../../Domains/comments/CommentRepository')
 const RegisteredComment = require('../../Domains/comments/entities/RegisteredComment')
 const ForbiddenError = require('../../Commons/exceptions/ForbiddenError')
-const InvariantError = require('../../Commons/exceptions/InvariantError')
 const NotFoundError = require('../../Commons/exceptions/NotFoundError')
 class CommentRepositoryPostgres extends CommentRepository{
     constructor(pool, idGenerator, dateGenerator){
@@ -30,7 +29,7 @@ class CommentRepositoryPostgres extends CommentRepository{
             throw new ForbiddenError('User tidak memiliki akses') 
         }
         else{
-            return {isDeleted: true}
+            return {isDeleted: true, deletedAt: date}
         }
     }
     async getComment(id){
@@ -56,6 +55,17 @@ class CommentRepositoryPostgres extends CommentRepository{
             values: [id],
           }
         const result = await this._pool.query(query)
+        return result.rows
+    }
+    async verifyCommentAvaibility(id){
+        const query = {
+            text: 'SELECT id FROM comments WHERE id = $1',
+            values: [id],
+        }
+        const result = await this._pool.query(query)
+        if (!result.rowCount) {
+            throw new NotFoundError('comment tidak ditemukan')
+        }
         return result.rows
     }
 }

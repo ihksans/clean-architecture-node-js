@@ -19,10 +19,10 @@ describe('Delete Comment Use Case', () => {
     mockCommentRepository.deleteComment = jest
       .fn()
       .mockImplementation(() => Promise.resolve(response))
-    mockCommentRepository.getComment = jest
+    mockCommentRepository.verifyCommentAvaibility = jest
       .fn()
       .mockImplementation(() => Promise.resolve(response))
-    mockThreadRepository.getThread = jest
+    mockThreadRepository.verifyThreadAvaibility = jest
       .fn()
       .mockImplementation(() => Promise.resolve(response))
 
@@ -40,8 +40,8 @@ describe('Delete Comment Use Case', () => {
 
     // Assert
     expect(isDelete).toEqual(true)
-    expect(mockCommentRepository.getComment).toBeCalledWith(commentId)
-    expect(mockThreadRepository.getThread).toBeCalledWith(id)
+    expect(mockCommentRepository.verifyCommentAvaibility).toBeCalledWith(commentId)
+    expect(mockThreadRepository.verifyThreadAvaibility).toBeCalledWith(id)
     expect(mockCommentRepository.deleteComment).toBeCalledWith(
       commentId,
       ownerId,

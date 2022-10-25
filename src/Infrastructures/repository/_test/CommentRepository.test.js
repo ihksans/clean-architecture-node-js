@@ -17,7 +17,7 @@ describe('CommentRepositoryPostgres', ()=>{
         await pool.end
     })
     describe('addComment function', ()=>{
-        it('should persist register thread and return registered thread correctly', async()=>{
+        it('should persist register comment and return registered comment correctly', async()=>{
             // Arrange 
             const registerComment = new RegisterComment({
                 content: 'comment',
@@ -28,16 +28,21 @@ describe('CommentRepositoryPostgres', ()=>{
                 password: 'secret',
                 fullname: 'usernamedev'
             }
+            const commentId = 'comment-123'
             const fakeIdGenerator = () => '123'
             const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator)
             const {threadId, userid}  = await ThreadTableTestHelper.addThreadWithReturnId(userPayload)
             // Action 
             registerComment.ownerId = userid
             registerComment.threadId = threadId
-            await commentRepositoryPostgres.addComment(registerComment.content, registerComment.ownerId, registerComment.threadId)
+            const comment = await commentRepositoryPostgres.addComment(registerComment.content, registerComment.ownerId, registerComment.threadId)
             // Assert
-            const comment = await CommentTableTestHelper.findCommentById('comment-123')
-            expect(comment).toHaveLength(1)
+            const response = await CommentTableTestHelper.findCommentById(commentId)
+            expect(response).toHaveLength(1)
+            expect(comment.id).toEqual(commentId)
+            expect(comment.content).toEqual(registerComment.content)
+            expect(comment.owner).toEqual(userid)
+            expect(response[0].threadId).toEqual(threadId)
         })
     }),
     describe('delete comment function', ()=>{
@@ -65,9 +70,15 @@ describe('CommentRepositoryPostgres', ()=>{
             }
             const fakeIdGenerator = () => '123'
             const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator, fakeDateGenerator)
-            const { isDeleted } = await commentRepositoryPostgres.deleteComment(commentId, userid )
+            const { isDeleted, deletedAt } = await commentRepositoryPostgres.deleteComment(commentId, userid )
+            const comment  = await CommentTableTestHelper.findCommentById(commentId)
+
             // Action
             expect(isDeleted).toEqual(true)
+            expect(deletedAt).not.toBeNull()
+            expect(deletedAt).toBeDefined()
+            expect(comment[0].deletedAt).not.toBeNull()
+            expect(comment[0].deletedAt).toBeDefined()
         }),
         it('should throw error forbiden to delete comment', async()=>{
             // Arrange
@@ -123,13 +134,6 @@ describe('CommentRepositoryPostgres', ()=>{
             expect(id).toEqual("comment-123")
             expect(content).toEqual(registerComment.content)
             expect(ownerId).toEqual(userid)
-        }),
-        it('should error when comments id not found', async ()=>{
-            const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {})
-            // Assert
-            await expect(commentRepositoryPostgres.getComment('asdasd'))
-                .rejects
-                .toThrowError(NotFoundError)
         })
     }),
     describe('get comments function', ()=>{
@@ -139,6 +143,30 @@ describe('CommentRepositoryPostgres', ()=>{
             const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {})
             const  comments = await commentRepositoryPostgres.getComments(threadId)
             expect(comments).toHaveLength(2)
+        }),
+        it('should error when comments id not found', async ()=>{
+            const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {})
+            // Assert
+            await expect(commentRepositoryPostgres.getComment('asdasd'))
+                .rejects
+                .toThrowError(NotFoundError)
+        })
+    })
+    describe('verifyCommentAvaibility function', ()=>{
+        it('should verify comment avaibility correcly', async ()=>{
+            // stub
+            const {commentId} = await ThreadTableTestHelper.addThreadDetailWithReturnAllId()
+            const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {})
+            const comment = await commentRepositoryPostgres.verifyCommentAvaibility(commentId)
+            expect(comment).toHaveLength(1)
+        })
+        it('should error when comment id not found', async ()=>{
+            // Assert
+            const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {})
+            // Assert
+            await expect(commentRepositoryPostgres.verifyCommentAvaibility('asdasd'))
+                .rejects
+                .toThrowError(NotFoundError)
         })
     })
 })

@@ -7,8 +7,8 @@ class AddReplyUseCase {
     this._replyRepository = replyRepository
   }
   async execute(payload, id, commentId, threadId) {
-    await this._threadRepository.getThread(threadId)
-    await this._commentRepository.getComment(commentId)
+    await this._threadRepository.verifyThreadAvaibility(threadId)
+    await this._commentRepository.verifyCommentAvaibility(commentId)
     const registerReply = new RegisterReply({ content: payload })
     return this._replyRepository.addReply(registerReply.content, id, commentId)
   }

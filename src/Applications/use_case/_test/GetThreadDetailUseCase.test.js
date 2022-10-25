@@ -70,7 +70,7 @@ describe('Get Thread Use Case', () => {
             "date": "2022-10-14T15:38:59.442Z",
             "username": "dicoding",
             "commentId": "comment-BVXLLL0oCWvI3Z7Sb99Ox",
-            "content": "**balasan telah dihapus**",
+            "content": "**komentar telah dihapus**",
             "deletedAt": "2022-10-14T22:40:04.063Z"
         }
     ]
@@ -243,7 +243,7 @@ describe('Get Thread Use Case', () => {
               "date": "2022-10-13T00:06:05.237Z",
               "username": "dicoding",
               "deletedAt": "2022-10-13T00:06:05.237Z",
-              "content": "**balasan telah dihapus**",
+              "content": "**komentar telah dihapus**",
               "replies": []
           }
       ]
@@ -255,7 +255,7 @@ describe('Get Thread Use Case', () => {
           "date": "2022-10-13T00:06:05.237Z",
           "username": "dicoding",
           "deletedAt": "2022-10-13T00:06:05.237Z",
-          "content": "**balasan telah dihapus**"
+          "content": "**komentar telah dihapus**"
         }
       ]
     const replies = []

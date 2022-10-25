@@ -11,5 +11,8 @@ class ReplyRepository {
     async getReplies(reply){
         throw new Error('REPLY_REPOSITORY.METHOD_NOT_IMPLEMENTED')
     }
+    async verifyReplyAvaibility(reply){
+        throw new Error('REPLY_REPOSITORY.METHOD_NOT_IMPLEMENTED')
+    }
 }
 module.exports = ReplyRepository

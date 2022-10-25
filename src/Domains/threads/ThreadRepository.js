@@ -11,5 +11,8 @@ class ThreadRepository {
     async getThreadDetail(thread){
         throw new Error('THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED')
     }
+    async verifyThreadAvaibility(thread){
+        throw new Error('THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED')
+    }
 }
 module.exports = ThreadRepository
