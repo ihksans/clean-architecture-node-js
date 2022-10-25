@@ -6,6 +6,7 @@ const pool = require('../../database/postgres/pool');
 const CommentRepositoryPostgres = require('../CommentRepositoryPostgres');
 const ForbiddenError = require('../../../Commons/exceptions/ForbiddenError');
 const InvariantError = require('../../../Commons/exceptions/InvariantError');
+const NotFoundError = require('../../../Commons/exceptions/NotFoundError');
 describe('CommentRepositoryPostgres', ()=>{
     afterEach(async ()=>{
         await CommentTableTestHelper.cleanTable()
@@ -123,12 +124,12 @@ describe('CommentRepositoryPostgres', ()=>{
             expect(content).toEqual(registerComment.content)
             expect(ownerId).toEqual(userid)
         }),
-        it('should error when thread id not found', async ()=>{
+        it('should error when comments id not found', async ()=>{
             const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {})
             // Assert
             await expect(commentRepositoryPostgres.getComment('asdasd'))
                 .rejects
-                .toThrowError(InvariantError)
+                .toThrowError(NotFoundError)
         })
     }),
     describe('get comments function', ()=>{

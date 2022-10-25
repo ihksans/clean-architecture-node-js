@@ -17,11 +17,10 @@ describe('a Registered Reply', ()=>{
             commentId: 'comment-123'
         }
         // Action
-        const {id, ownerId, commentId, content} = new RegisteredReply(payload)
+        const {id, owner, content} = new RegisteredReply(payload)
         // Assert
         expect(id).toEqual(payload.id)
-        expect(ownerId).toEqual(payload.ownerId)
-        expect(commentId).toEqual(payload.commentId)
+        expect(owner).toEqual(payload.ownerId)
         expect(content).toEqual(payload.content)
     }),
     it('should throw error when payload did not meet data type specification', ()=>{

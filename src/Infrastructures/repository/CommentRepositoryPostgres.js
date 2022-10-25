@@ -2,6 +2,7 @@ const CommentRepository = require('../../Domains/comments/CommentRepository')
 const RegisteredComment = require('../../Domains/comments/entities/RegisteredComment')
 const ForbiddenError = require('../../Commons/exceptions/ForbiddenError')
 const InvariantError = require('../../Commons/exceptions/InvariantError')
+const NotFoundError = require('../../Commons/exceptions/NotFoundError')
 class CommentRepositoryPostgres extends CommentRepository{
     constructor(pool, idGenerator, dateGenerator){
         super()
@@ -39,17 +40,14 @@ class CommentRepositoryPostgres extends CommentRepository{
         }
         const result = await this._pool.query(query)
         if (!result.rowCount) {
-            throw new InvariantError('comment tidak ditemukan')
+            throw new NotFoundError('comment tidak ditemukan')
         }
         return result.rows[0]
     }
     async getComments(id){
         const query = {
-            text: ` SELECT comments.id, 
-                    CASE
-                        WHEN comments."deletedAt" is NULL THEN comments.content
-                    ELSE '**komentar telah dihapus**'
-                    END AS content, comments."date", users.username
+            text: ` SELECT comments.id, comments."date", users.username,
+                    comments."deletedAt", comments.content
                     FROM comments
                     LEFT JOIN users 
                     ON comments."ownerId" = users.id

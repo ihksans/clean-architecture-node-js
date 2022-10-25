@@ -7,8 +7,8 @@ class AddCommentUseCase {
         this._threadRepository = threadRepository
     }
     async execute(payload, id, threadId){
-        const registerComment = new RegisterComment({content: payload})
         await this._threadRepository.getThread(threadId)
+        const registerComment = new RegisterComment({content: payload})
         return this._commentRepository.addComment(registerComment.content,id,threadId)
     }
 }

@@ -62,7 +62,7 @@ describe('ThreadRepositoryPostgres', ()=>{
             // Action & Assert
             await expect(threadRepositoryPostgres.getThread('asdasd'))
                 .rejects
-                .toThrowError(InvariantError)
+                .toThrowError(NotFoundError)
         })
     }),
     describe('getThread function', ()=>{

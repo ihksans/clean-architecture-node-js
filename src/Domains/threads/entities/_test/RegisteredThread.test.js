@@ -17,12 +17,11 @@ describe('Registered Thread Test', ()=>{
             body: 'dicoding',
         }
         // Action
-        const {id, ownerId, title, body} = new RegisteredThread(payload)
+        const {id, owner, title} = new RegisteredThread(payload)
         // Assert
         expect(id).toEqual(payload.id)
-        expect(ownerId).toEqual(payload.ownerId)
+        expect(owner).toEqual(payload.ownerId)
         expect(title).toEqual(payload.title)
-        expect(body).toEqual(payload.body)
     }),
     it('should throw error when payload did not meet data type specification', ()=>{
         const payload = {

@@ -1,17 +1,16 @@
 class RegisteredComment{
     constructor(payload){
         this._verifyPayload(payload)
-        const {id, ownerId, content, threadId} = payload
+        const {id, ownerId, content} = payload
         this.id = id
-        this.ownerId = ownerId
+        this.owner = ownerId
         this.content = content
-        this.threadId = threadId
     }
-    _verifyPayload({id, ownerId, content, threadId}){
-        if (!id || !ownerId || !threadId || !content) {
+    _verifyPayload({id, ownerId, content}){
+        if (!id || !ownerId || !content) {
             throw new Error('REGISTERED_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY')
         }
-        if (typeof id !== 'string' || typeof ownerId !== 'string' || typeof content !== 'string'|| typeof threadId !== 'string') {
+        if (typeof id !== 'string' || typeof ownerId !== 'string' || typeof content !== 'string') {
             throw new Error('REGISTERED_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION')
         }
     }

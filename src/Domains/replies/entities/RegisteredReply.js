@@ -1,17 +1,16 @@
 class RegisteredReply{
     constructor(payload){
         this._verifyPayload(payload)
-        const {id, ownerId, content, commentId} = payload
+        const {id, ownerId, content} = payload
         this.id = id
-        this.ownerId = ownerId
+        this.owner = ownerId
         this.content = content
-        this.commentId = commentId
     }
-    _verifyPayload({id, ownerId, content, commentId}){
-        if (!id || !ownerId || !commentId || !content) {
+    _verifyPayload({id, ownerId, content}){
+        if (!id || !ownerId || !content) {
             throw new Error('REGISTERED_REPLY.NOT_CONTAIN_NEEDED_PROPERTY');
         }
-        if (typeof id !== 'string' || typeof ownerId !== 'string' || typeof content !== 'string'|| typeof commentId !== 'string') {
+        if (typeof id !== 'string' || typeof ownerId !== 'string' || typeof content !== 'string') {
             throw new Error('REGISTERED_REPLY.NOT_MEET_DATA_TYPE_SPECIFICATION');
         }
     }

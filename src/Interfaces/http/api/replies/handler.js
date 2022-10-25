@@ -1,5 +1,4 @@
 const AddReplyUseCase = require("../../../../Applications/use_case/AddReplyUseCase")
-const DeleteCommentUseCase = require("../../../../Applications/use_case/DeleteCommentUseCase")
 const DeleteReplyUseCase = require("../../../../Applications/use_case/DeleteReplyUseCase")
 
 class ReplyHandler{

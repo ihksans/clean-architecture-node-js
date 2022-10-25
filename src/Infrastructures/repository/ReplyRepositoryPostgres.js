@@ -1,5 +1,6 @@
 const ForbiddenError = require('../../Commons/exceptions/ForbiddenError')
 const InvariantError = require('../../Commons/exceptions/InvariantError')
+const NotFoundError = require('../../Commons/exceptions/NotFoundError')
 const RegisteredReply = require('../../Domains/replies/entities/RegisteredReply')
 const ReplyRepository = require('../../Domains/replies/ReplyRepository')
 class ReplyRepositoryPostgres extends ReplyRepository{
@@ -39,17 +40,14 @@ class ReplyRepositoryPostgres extends ReplyRepository{
         }
         const result = await this._pool.query(query)
         if (!result.rowCount) {
-            throw new InvariantError('reply tidak ditemukan')
+            throw new NotFoundError('reply tidak ditemukan')
         }
         return result.rows[0]
     }
     async getReplies(id){
         const query = {
-            text: ` SELECT replies.id, 
-                    CASE
-                        WHEN replies."deletedAt" is NULL THEN replies.content
-                    ELSE '**balasan telah dihapus**'
-                    END AS content, replies.date, users.username, replies."commentId"
+            text: ` SELECT replies.id,replies.date, users.username, replies."commentId",
+                    replies.content, replies."deletedAt"
                     FROM replies
                     LEFT JOIN users 
                     ON replies."ownerId" = users.id

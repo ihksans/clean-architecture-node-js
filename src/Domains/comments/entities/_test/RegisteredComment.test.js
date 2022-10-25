@@ -19,12 +19,11 @@ describe('a Registered Comment', ()=>{
             threadId: 'thread-123'
         }
         // Action
-        const {id, ownerId, threadId, content} = new RegisteredComment(payload)
+        const {id, owner, content} = new RegisteredComment(payload)
 
         // Assert
         expect(id).toEqual(payload.id)
-        expect(ownerId).toEqual(payload.ownerId)
-        expect(threadId).toEqual(payload.threadId)
+        expect(owner).toEqual(payload.ownerId)
         expect(content).toEqual(payload.content)
     }),
     it('should throw error when payload did not meet data type specification', ()=>{

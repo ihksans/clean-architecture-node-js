@@ -7,6 +7,7 @@ const InvariantError = require('../../../Commons/exceptions/InvariantError');
 const ReplyTableTestHelper = require('../../../../tests/ReplyTableTestHelper');
 const RegisterReply = require('../../../Domains/replies/entities/RegisterReply');
 const ReplyRepositoryPostgres = require('../ReplyRepositoryPostgres');
+const NotFoundError = require('../../../Commons/exceptions/NotFoundError');
 
 describe('ReplyRepositoryPostgres', ()=>{
     afterEach(async ()=>{
@@ -88,7 +89,7 @@ describe('ReplyRepositoryPostgres', ()=>{
             // Assert
             await expect(replyRepositoryPostgres.getReply('asdasd'))
                 .rejects
-                .toThrowError(InvariantError)
+                .toThrowError(NotFoundError)
         })
     })
     describe('get replies function', ()=>{
